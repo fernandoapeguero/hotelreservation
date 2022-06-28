@@ -9,6 +9,7 @@ import java.util.List;
 public class AdminResource {
 
     public static Customer getCustomer(String email){
+        return null;
 
     }
 
@@ -17,10 +18,12 @@ public class AdminResource {
     }
 
     public static Collection<IRoom> getAllRooms() {
+        return null;
 
     }
 
     public static Collection<Customer> getAllCustomer() {
+        return null;
 
     }
 
