@@ -188,6 +188,9 @@ public class MainMenu {
 //    Admin Menu Options
 
     public static void seeAllCustomers() {
+
+        System.out.println("Customer Directory");
+        System.out.println("----------------------------------------------");
         Collection<Customer> customers = CustomerService.getAllCustomers();
 
         if (customers.size() > 0){
@@ -196,6 +199,8 @@ public class MainMenu {
 
                 System.out.println(customer);
             }
+            System.out.println("----------------------------------------------");
+            System.out.println();
         } else {
             System.out.println("There are no customer at the current moment");
         }
