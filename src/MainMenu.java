@@ -1,8 +1,11 @@
+import models.Customer;
 import models.IRoom;
 import models.Room;
 import models.RoomType;
+import service.CustomerService;
 import service.ReservationService;
 
+import java.util.Collection;
 import java.util.Scanner;
 
 public class MainMenu {
@@ -140,14 +143,62 @@ public class MainMenu {
     }
 
     public static void createAccount () {
-        System.out.println("Creating account");
+        Scanner scanner = new Scanner(System.in);
 
+        boolean loop = true;
+
+        while(loop){
+
+            try{
+
+                System.out.println("Enter your email: ");
+                String email = scanner.nextLine();
+
+                System.out.println("First Name: ");
+                String firstName = scanner.nextLine();
+
+                System.out.println("Last Name: ");
+                String lastName = scanner.nextLine();
+
+                CustomerService.addCustomer(email, firstName,lastName);
+            }
+            catch (Exception e){
+                System.out.println("Inputted information invalid");
+            }
+
+            String response = "";
+            System.out.println("Would you like to create another account ?");
+            System.out.println("Y/N");
+
+            while(!response.equalsIgnoreCase("y") || !response.equalsIgnoreCase("n")){
+                response = scanner.nextLine();
+                if(response.equalsIgnoreCase("y")){
+                    break;
+                } else if(response.equalsIgnoreCase("n")){
+                    loop = false;
+                    break;
+                } else {
+                    System.out.println("Please enter a valid choice Y or N ");
+                }
+            }
+
+        }
     }
 
 //    Admin Menu Options
 
     public static void seeAllCustomers() {
-        System.out.println("Seen all Customers");
+        Collection<Customer> customers = CustomerService.getAllCustomers();
+
+        if (customers.size() > 0){
+
+            for(Customer customer : customers) {
+
+                System.out.println(customer);
+            }
+        } else {
+            System.out.println("There are no customer at the current moment");
+        }
 
     }
 
