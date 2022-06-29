@@ -3,42 +3,51 @@ package api;
 import models.Customer;
 import models.IRoom;
 import models.Reservation;
+import service.CustomerService;
+import service.ReservationService;
 
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
+import java.util.regex.Pattern;
 
 public class HotelResource {
 
     public static Customer getCustomer(String email){
-        return null;
-
+        return CustomerService.getCustomer(email);
     }
 
 
     public static void createACustomer(String email, String firstName, String lastName) {
 
+      CustomerService.addCustomer(email, firstName,lastName);
     }
 
     public static IRoom getRoom (String roomNumber){
-        return null;
+        return ReservationService.getARoom(roomNumber);
 
     }
 
     public static Reservation bookARoom(String customerEmail, IRoom room, Date checkInDate, Date checkOutDate){
-        return null;
+
+        Customer customer = CustomerService.getCustomer(customerEmail);
+
+
+        return ReservationService.reserveARoom(customer, room, checkInDate, checkOutDate);
 
     }
 
     public static Collection<Reservation> getCustomerReservations(String customerEmail) {
-        return null;
+
+        Customer customer = CustomerService.getCustomer(customerEmail);
+
+        return ReservationService.getCustomerReservation(customer);
 
     }
 
     public Collection<IRoom> findARoom(Date checkIn, Date checkOut) {
-        return null;
+        return ReservationService.findRooms(checkIn, checkOut);
 
     }
-
 
 }

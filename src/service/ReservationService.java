@@ -13,11 +13,10 @@ import java.util.Date;
 
 public class ReservationService {
 
-    private static Collection<Reservation> reservations = new ArrayList<>();
-    private static Collection<IRoom> rooms = new ArrayList<>();
+    public static Collection<Reservation> reservations = new ArrayList<>();
+    public static Collection<IRoom> rooms = new ArrayList<>();
 
     public static void addRoom(IRoom room){
-
         rooms.add(room);
 
     }
@@ -36,22 +35,25 @@ public class ReservationService {
 
     public static Reservation reserveARoom(Customer customer, IRoom room, Date checkinDate, Date checkoutDate) {
 
-
-
-        return new Reservation(
+        Reservation reserve = new Reservation(
                 customer,
                 room,
                 checkinDate,
                 checkoutDate
         );
+
+        reservations.add(reserve);
+
+        return reserve;
     }
     public static Collection<IRoom> findRooms(Date checkInDate, Date checkoutDate) {
 
-        return null;
+        return rooms;
 
     }
 
     public static Collection<Reservation> getCustomerReservation(Customer customer){
+
         return reservations;
     }
 

@@ -2,6 +2,9 @@ package api;
 
 import models.Customer;
 import models.IRoom;
+import models.Reservation;
+import service.CustomerService;
+import service.ReservationService;
 
 import java.util.Collection;
 import java.util.List;
@@ -9,25 +12,34 @@ import java.util.List;
 public class AdminResource {
 
     public static Customer getCustomer(String email){
-        return null;
+        return CustomerService.getCustomer(email);
 
     }
 
     public static void addRoom(List<IRoom> rooms){
-
+        for (IRoom room: rooms){
+            ReservationService.addRoom(room);
+        }
     }
 
     public static Collection<IRoom> getAllRooms() {
-        return null;
+        return ReservationService.rooms;
 
     }
 
     public static Collection<Customer> getAllCustomer() {
-        return null;
+        return CustomerService.getAllCustomers();
 
     }
 
-    public static void displayAllreservations() {
+    public static void displayAllReservations() {
 
+        Collection<Reservation> reservations =  ReservationService.reservations;
+
+        for (Reservation reserve: reservations) {
+
+            System.out.println(reserve);
+
+        }
     }
 }
