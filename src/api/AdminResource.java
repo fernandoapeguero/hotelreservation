@@ -34,12 +34,6 @@ public class AdminResource {
 
     public static void displayAllReservations() {
 
-        Collection<Reservation> reservations =  ReservationService.reservations;
-
-        for (Reservation reserve: reservations) {
-
-            System.out.println(reserve);
-
-        }
+        ReservationService.printAllReservation();
     }
 }

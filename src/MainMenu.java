@@ -1,11 +1,12 @@
-import models.Customer;
-import models.IRoom;
-import models.Room;
-import models.RoomType;
+import models.*;
 import service.CustomerService;
 import service.ReservationService;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Collection;
+import java.util.Date;
 import java.util.Scanner;
 
 public class MainMenu {
@@ -23,20 +24,22 @@ public class MainMenu {
     public static void mainMenu () {
         boolean loop = true;
 
-        while(loop) {
+        try(Scanner scanner = new Scanner(System.in)) {
+            while (loop) {
 
 
-            System.out.println("Main Menu");
-            System.out.println("---------------------------------------------");
-            System.out.println("1. Find and reserve a room.");
-            System.out.println("2. See my reservations.");
-            System.out.println("3. Create and account.");
-            System.out.println("4. Admin");
-            System.out.println("5. Exit");
-            System.out.println("---------------------------------------------");
+                System.out.println("Main Menu");
+                System.out.println("---------------------------------------------");
+                System.out.println("1. Find and reserve a room.");
+                System.out.println("2. See my reservations.");
+                System.out.println("3. Create and account.");
+                System.out.println("4. Admin");
+                System.out.println("5. Exit");
+                System.out.println("---------------------------------------------");
 
-          loop =   getUserInput();
+                loop = getUserInput();
 
+            }
         }
 
     }
@@ -132,13 +135,90 @@ public class MainMenu {
 
 //    Customer Menu Options
     public static void findAndReserveRoom() {
-        System.out.println("Finding and reserving a room for you.");
+        System.out.println("--------------------- Available Rooms ---------------------");
 
+        Scanner scanner = new Scanner(System.in);
+        boolean loop = true;
+        System.out.println("Enter your checkin and check out dates");
+        System.out.println("Date format is as follow day/month/year");
+        System.out.println();
+
+        while (loop) {
+
+            try {
+                System.out.println("Check in Date: ");
+                String checkIn = scanner.nextLine();
+                System.out.println("Check out Date: ");
+                String checkOut = scanner.nextLine();
+
+
+                Date checkInDate = new Date(checkIn);
+                Date checkOutDate = new Date(checkOut);
+
+                if (checkInDate.after(checkOutDate)){
+                    throw new IllegalArgumentException("The check in date must be before your checkout date.");
+
+                }
+
+
+                Collection<IRoom> rooms = ReservationService.findRooms(checkInDate, checkOutDate);
+
+                if (rooms.size() == 0){
+                    System.out.println("No rooms available");
+                } else {
+                    for(IRoom room : rooms){
+                        System.out.println(room);
+                    }
+                }
+
+            } catch (Exception e) {
+                System.out.println(e.getLocalizedMessage());
+                System.out.println("Date format day/month/year");
+                System.out.println();
+            }
+
+            String response = "";
+            System.out.println("Do you want to check another date ?");
+            loop = isLoop(scanner, loop, response);
+
+
+        }
 
     }
 
+    private static boolean isLoop(Scanner scanner, boolean loop, String response) {
+        System.out.println("Y/N");
+
+        while(!response.equalsIgnoreCase("y") || !response.equalsIgnoreCase("n")){
+            response = scanner.nextLine();
+            if(response.equalsIgnoreCase("y")){
+                break;
+            } else if(response.equalsIgnoreCase("n")){
+                loop = false;
+                break;
+            } else {
+                System.out.println("Please enter a valid choice Y or N ");
+            }
+        }
+        return loop;
+    }
+
     public static void seeReservations() {
-        System.out.println("Seen my reservations");
+        System.out.println("All Reservations");
+
+        Scanner scanner = new Scanner(System.in);
+
+        System.out.println("enter you email");
+        String email = scanner.nextLine();
+
+        Customer currentCustomer = CustomerService.getCustomer(email);
+
+        Collection<Reservation> customerReservations =  ReservationService.getCustomerReservation(currentCustomer);
+
+        for (Reservation reserve: customerReservations){
+            System.out.println(reserve);
+        }
+
 
     }
 
@@ -168,19 +248,7 @@ public class MainMenu {
 
             String response = "";
             System.out.println("Would you like to create another account ?");
-            System.out.println("Y/N");
-
-            while(!response.equalsIgnoreCase("y") || !response.equalsIgnoreCase("n")){
-                response = scanner.nextLine();
-                if(response.equalsIgnoreCase("y")){
-                    break;
-                } else if(response.equalsIgnoreCase("n")){
-                    loop = false;
-                    break;
-                } else {
-                    System.out.println("Please enter a valid choice Y or N ");
-                }
-            }
+            loop = isLoop(scanner, loop, response);
 
         }
     }
@@ -217,7 +285,12 @@ public class MainMenu {
     }
 
     public static void seeAllReservations() {
-        System.out.println("This are all the reservations");
+        System.out.println("Reservations Directory");
+
+        System.out.println("----------------------------------------------");
+        System.out.println();
+        ReservationService.printAllReservation();
+        System.out.println("----------------------------------------------");
 
     }
 
@@ -258,21 +331,9 @@ public class MainMenu {
 
             }
 
-            String text = "";
-
-            while (!text.equalsIgnoreCase("y") || text.equalsIgnoreCase("n")){
-                System.out.println("Do you want to add another room Y/N ");
-
-                text = scanner.nextLine();
-
-                if(text.equals("n") ) {
-                    loop = false;
-                    break;
-                } else if(text.equalsIgnoreCase("y")){
-                    break;
-                }
-
-            }
+            String response = "";
+            System.out.println("Do you want to add another room Y/N ");
+            loop = isLoop(scanner, loop, response);
 
 
         }

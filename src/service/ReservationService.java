@@ -5,6 +5,7 @@ import models.IRoom;
 import models.Reservation;
 import models.Room;
 
+import java.sql.Array;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -13,7 +14,7 @@ import java.util.Date;
 
 public class ReservationService {
 
-    public static Collection<Reservation> reservations = new ArrayList<>();
+    private static Collection<Reservation> reservations = new ArrayList<>();
     public static Collection<IRoom> rooms = new ArrayList<>();
 
     public static void addRoom(IRoom room){
@@ -48,18 +49,41 @@ public class ReservationService {
     }
     public static Collection<IRoom> findRooms(Date checkInDate, Date checkoutDate) {
 
-        return rooms;
+
+        Collection<IRoom> rentableRooms = new ArrayList<>();
+
+        for (IRoom room: rooms) {
+
+            rentableRooms.add(room);
+        }
+
+        return rentableRooms;
 
     }
 
     public static Collection<Reservation> getCustomerReservation(Customer customer){
 
-        return reservations;
+        Collection<Reservation> customerReservations = new ArrayList<>();
+
+        for (Reservation reserve: reservations){
+
+            if(customer.equals(reserve.getCustomer())){
+                customerReservations.add(reserve);
+            }
+        }
+
+        return customerReservations;
     }
 
     public static void printAllReservation() {
-        for (Reservation reservation: reservations) {
-            System.out.println(reservation);
+
+        if (reservations.size() == 0)  {
+            System.out.println("There are no current reservations.");
+        } else {
+            for (Reservation reservation: reservations) {
+                System.out.println(reservation);
+            }
         }
+
     }
 }
