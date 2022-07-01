@@ -75,9 +75,7 @@ public class ReservationService {
                         addRoomToList = false;
                     }
 
-
                 }
-
             }
 
             if (addRoomToList) {

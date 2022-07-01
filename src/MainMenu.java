@@ -4,6 +4,7 @@ import service.ReservationService;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
@@ -146,8 +147,8 @@ public class MainMenu {
 
         Collection<IRoom> rooms = null;
 
-        System.out.println("Enter your checkin and check out dates");
-        System.out.println("Date format is as follow day/month/year");
+        System.out.println("Enter your check in and check out dates");
+        System.out.println("Date format is as follow day-month-year or dd-mm-year");
         System.out.println();
 
 
@@ -159,9 +160,15 @@ public class MainMenu {
                 System.out.println("Check out Date: ");
                 String checkOut = scanner.nextLine();
 
+                Calendar calendar = Calendar.getInstance();
 
-                checkInDate = new Date(checkIn);
-                checkOutDate = new Date(checkOut);
+                SimpleDateFormat checkInFormatter = new SimpleDateFormat("dd-MM-yyyy");
+                SimpleDateFormat checkOutFormatter = new SimpleDateFormat("dd-MM-yyyy");
+
+                calendar.setTime(checkInFormatter.parse(checkIn));
+                checkInDate = calendar.getTime();
+                calendar.setTime(checkOutFormatter.parse(checkOut));
+                checkOutDate = calendar.getTime();
 
                 if (checkInDate.after(checkOutDate)){
                     throw new IllegalArgumentException("The check in date must be before your checkout date.");
