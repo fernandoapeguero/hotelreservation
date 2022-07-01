@@ -139,9 +139,17 @@ public class MainMenu {
 
         Scanner scanner = new Scanner(System.in);
         boolean loop = true;
+        boolean bookingRoom = true;
+
+        Date checkInDate = null;
+        Date checkOutDate = null;
+
+        Collection<IRoom> rooms = null;
+
         System.out.println("Enter your checkin and check out dates");
         System.out.println("Date format is as follow day/month/year");
         System.out.println();
+
 
         while (loop) {
 
@@ -152,8 +160,8 @@ public class MainMenu {
                 String checkOut = scanner.nextLine();
 
 
-                Date checkInDate = new Date(checkIn);
-                Date checkOutDate = new Date(checkOut);
+                checkInDate = new Date(checkIn);
+                checkOutDate = new Date(checkOut);
 
                 if (checkInDate.after(checkOutDate)){
                     throw new IllegalArgumentException("The check in date must be before your checkout date.");
@@ -161,7 +169,7 @@ public class MainMenu {
                 }
 
 
-                Collection<IRoom> rooms = ReservationService.findRooms(checkInDate, checkOutDate);
+                rooms = ReservationService.findRooms(checkInDate, checkOutDate);
 
                 if (rooms.size() == 0){
                     System.out.println("No rooms available");
@@ -169,17 +177,51 @@ public class MainMenu {
                     for(IRoom room : rooms){
                         System.out.println(room);
                     }
+
                 }
 
+                System.out.println();
             } catch (Exception e) {
                 System.out.println(e.getLocalizedMessage());
                 System.out.println("Date format day/month/year");
                 System.out.println();
             }
 
+
+            if (rooms != null) {
+                while(bookingRoom) {
+                    System.out.println("Would you like to book a room Y/N");
+                    String response = scanner.nextLine();
+
+                    Customer customer;
+
+                    System.out.println("Do you have an account with us ? Y/N");
+                    String hasAnAccount = scanner.nextLine();
+
+                    bookingRoom = isLoop(scanner, true, hasAnAccount);
+
+                    System.out.println("Enter your email");
+                    String email = scanner.nextLine();
+
+                    customer = CustomerService.getCustomer(email);
+
+                    System.out.println("Enter the room id you wish to reserve");
+                    String roomId = scanner.nextLine();
+
+                    IRoom room = ReservationService.getARoom(roomId);
+
+                    ReservationService.reserveARoom(customer, room, checkInDate, checkOutDate);
+
+                    String addAnotherRoom = "";
+                    System.out.println("Do you wan to book another room ?");
+                    bookingRoom = isLoop(scanner, true, addAnotherRoom);
+                }
+            }
+
+
             String response = "";
-            System.out.println("Do you want to check another date ?");
-            loop = isLoop(scanner, loop, response);
+            System.out.println("Are you done or check more available dates ?");
+            loop = isLoop(scanner, true, response);
 
 
         }
@@ -187,7 +229,6 @@ public class MainMenu {
     }
 
     private static boolean isLoop(Scanner scanner, boolean loop, String response) {
-        System.out.println("Y/N");
 
         while(!response.equalsIgnoreCase("y") || !response.equalsIgnoreCase("n")){
             response = scanner.nextLine();
@@ -326,7 +367,12 @@ public class MainMenu {
                 ReservationService.addRoom(room);
 
             } catch (Exception e){
-                System.out.println("The values provided are invalid.");
+
+                if (e.getLocalizedMessage() == null){
+                    System.out.println(e.getLocalizedMessage());
+                } else {
+                    System.out.println("the input provided was wrong.");
+                }
                 scanner.nextLine();
 
             }
