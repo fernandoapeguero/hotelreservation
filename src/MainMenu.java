@@ -345,6 +345,7 @@ public class MainMenu {
     public static void addRoom() {
 
         boolean loop = true;
+        Room room = null;
 
         while(loop) {
             Scanner scanner = new Scanner(System.in);
@@ -369,7 +370,11 @@ public class MainMenu {
 
 
                 System.out.println("Room successfully added");
-                Room room = new Room(roomID, price, roomType);
+                if(price.intValue() == 0) {
+                    room = new FreeRoom(roomID, roomType);
+                } else {
+                    room = new Room(roomID, price, roomType);
+                }
 
                 ReservationService.addRoom(room);
 
