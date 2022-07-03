@@ -157,6 +157,7 @@ public class MainMenu {
                 System.out.println("Check in Date: ");
                 String checkIn = scanner.nextLine();
                 System.out.println("Check out Date: ");
+                System.out.println();
                 String checkOut = scanner.nextLine();
 
                 Calendar calendar = Calendar.getInstance();
