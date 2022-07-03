@@ -396,7 +396,7 @@ public class MainMenu {
                 HotelResource.createACustomer(email, firstName,lastName);
             }
             catch (Exception e){
-                System.out.println("Inputted information invalid");
+                System.out.println(e.getLocalizedMessage());
             }
 
             String response = "";

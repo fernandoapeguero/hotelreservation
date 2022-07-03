@@ -20,6 +20,13 @@ public class CustomerService {
             throw  new IllegalArgumentException("The data is invalid please fill out correctly");
         }
 
+        for (Customer customer: customers){
+
+            if (email.equals(customer.getEmail())){
+                throw new IllegalArgumentException("There is already and account with this email.");
+            }
+        }
+
         try {
             Customer customer = new Customer(firstName, lastName, email);
             customers.add(customer);
