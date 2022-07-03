@@ -1,14 +1,14 @@
+import api.AdminResource;
+import api.HotelResource;
 import models.*;
 import service.CustomerService;
 import service.ReservationService;
 
+import javax.lang.model.element.AnnotationMirror;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
-import java.util.Calendar;
-import java.util.Collection;
-import java.util.Date;
-import java.util.Scanner;
+import java.util.*;
 
 public class MainMenu {
 
@@ -143,6 +143,8 @@ public class MainMenu {
 
         Collection<IRoom> rooms = null;
 
+        Collection<Reservation> reservations = new ArrayList<>();
+
         System.out.println("Enter your check in and check out dates");
         System.out.println("Date format is as follow day-month-year or dd-mm-year");
         System.out.println();
@@ -172,7 +174,7 @@ public class MainMenu {
 
                 int count = 0;
                 while(count < 2) {
-                    rooms = ReservationService.findRooms(checkInDate, checkOutDate);
+                    rooms = HotelResource.findARoom(checkInDate, checkOutDate);
 
                     if (rooms.size() == 0 && count != 1) {
 
@@ -249,7 +251,7 @@ public class MainMenu {
                             if(hasAnAccount.equalsIgnoreCase("y")){
                                 System.out.println("Enter your email");
                                 String email = scanner.nextLine();
-                                customer = CustomerService.getCustomer(email);
+                                customer = HotelResource.getCustomer(email);
                                 break;
                             } else if (hasAnAccount.equalsIgnoreCase("n")){
                                 createAccount();
@@ -259,9 +261,9 @@ public class MainMenu {
                         System.out.println("Enter the room id you wish to reserve");
                         String roomId = scanner.nextLine();
 
-                        IRoom room = ReservationService.getARoom(roomId);
+                        IRoom room = HotelResource.getRoom(roomId);
 
-                        ReservationService.reserveARoom(customer, room, checkInDate, checkOutDate);
+                        reservations.add(HotelResource.bookARoom(customer.getEmail(), room, checkInDate, checkOutDate));
 
                         String addAnotherRoom = "";
                         System.out.println("Do you want to book another room ? Y/N");
@@ -280,6 +282,13 @@ public class MainMenu {
             loop = isLoop(scanner, true, response);
 
 
+        }
+
+        if (reservations.size() > 0) {
+            System.out.println("------------------Reservations--------------------");
+            for (Reservation reserve: reservations){
+                System.out.println(reserve);
+            }
         }
 
     }
@@ -308,9 +317,7 @@ public class MainMenu {
         System.out.println("enter you email");
         String email = scanner.nextLine();
 
-        Customer currentCustomer = CustomerService.getCustomer(email);
-
-        Collection<Reservation> customerReservations =  ReservationService.getCustomerReservation(currentCustomer);
+        Collection<Reservation> customerReservations =  HotelResource.getCustomerReservations(email);
 
         if (customerReservations.size() > 0) {
             for (Reservation reserve: customerReservations){
@@ -344,7 +351,7 @@ public class MainMenu {
                 System.out.println("Last Name: ");
                 String lastName = scanner.nextLine();
 
-                CustomerService.addCustomer(email, firstName,lastName);
+                HotelResource.createACustomer(email, firstName,lastName);
             }
             catch (Exception e){
                 System.out.println("Inputted information invalid");
@@ -363,7 +370,7 @@ public class MainMenu {
 
         System.out.println("Customer Directory");
         System.out.println("----------------------------------------------");
-        Collection<Customer> customers = CustomerService.getAllCustomers();
+        Collection<Customer> customers = AdminResource.getAllCustomer();
 
         if (customers.size() > 0){
 
@@ -380,11 +387,16 @@ public class MainMenu {
     }
 
     public static void seeAllRooms() {
-        System.out.println("This are all the rooms available");
-        for (IRoom r: ReservationService.rooms){
-            System.out.println(r);
-        }
+        System.out.println("----------------Rooms List----------------");
+        Collection<IRoom> rooms = AdminResource.getAllRooms();
 
+        if (rooms.size() == 0) {
+            System.out.println("There are no rooms available");
+        } else {
+            for (IRoom room: rooms){
+                System.out.println(room);
+            }
+        }
 
     }
 
@@ -393,7 +405,7 @@ public class MainMenu {
 
         System.out.println("----------------------------------------------");
         System.out.println();
-        ReservationService.printAllReservation();
+        AdminResource.displayAllReservations();
         System.out.println("----------------------------------------------");
 
     }
@@ -401,7 +413,7 @@ public class MainMenu {
     public static void addRoom() {
 
         boolean loop = true;
-        Room room;
+        List<IRoom> rooms = new ArrayList<>();
 
         while(loop) {
             Scanner scanner = new Scanner(System.in);
@@ -427,12 +439,10 @@ public class MainMenu {
 
                 System.out.println("Room successfully added");
                 if(price.intValue() == 0) {
-                    room = new FreeRoom(roomID, roomType);
+                    rooms.add(new FreeRoom(roomID, roomType));
                 } else {
-                    room = new Room(roomID, price, roomType);
+                    rooms.add(new Room(roomID, price, roomType));
                 }
-
-                ReservationService.addRoom(room);
 
             } catch (Exception e){
 
@@ -449,6 +459,7 @@ public class MainMenu {
             System.out.println("Do you want to add another room Y/N ");
             loop = isLoop(scanner, true, response);
 
+            AdminResource.addRoom(rooms);
 
         }
     }

@@ -12,7 +12,7 @@ import java.util.*;
 public class ReservationService {
 
     private static final List<Reservation> reservations = new ArrayList<>();
-    public static List<IRoom> rooms = new ArrayList<>();
+    private static final List<IRoom> rooms = new ArrayList<>();
 
     public static void addRoom(IRoom room){
         boolean isNotADuplicated = true;
@@ -69,7 +69,7 @@ public class ReservationService {
 
                     if (reserve.getRoom().equals(currentRoom)) {
 
-                        if (!checkInDate.after(reserve.getCheckoutDate())) {
+                        if (!checkInDate.after(reserve.getCheckoutDate()) && !checkoutDate.after(reserve.getCheckoutDate())) {
                             System.out.println("Current room have been reserve for this date ");
                             addRoomToList = false;
                         }
@@ -111,5 +111,9 @@ public class ReservationService {
             }
         }
 
+    }
+
+    public static Collection<IRoom> getRoomList(){
+        return rooms;
     }
 }

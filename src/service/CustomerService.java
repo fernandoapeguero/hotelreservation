@@ -9,7 +9,7 @@ import java.util.regex.Pattern;
 
 public class CustomerService {
 
-    private static Collection<Customer> customers = new ArrayList<>();
+    private static final Collection<Customer> customers = new ArrayList<>();
 
     public static void addCustomer(String email, String firstName, String lastName) {
 

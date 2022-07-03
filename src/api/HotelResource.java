@@ -45,7 +45,7 @@ public class HotelResource {
 
     }
 
-    public Collection<IRoom> findARoom(Date checkIn, Date checkOut) {
+    public static Collection<IRoom> findARoom(Date checkIn, Date checkOut) {
         return ReservationService.findRooms(checkIn, checkOut);
 
     }

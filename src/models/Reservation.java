@@ -5,9 +5,9 @@ import java.util.Date;
 public class Reservation {
 
     private Customer customer;
-    private IRoom room;
-    private Date checkInDate;
-    private Date checkoutDate;
+    private final IRoom room;
+    private final Date checkInDate;
+    private final Date checkoutDate;
 
 
     public Reservation(Customer customer, IRoom room, Date checkInDate, Date checkoutDate) {
