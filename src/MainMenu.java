@@ -265,9 +265,7 @@ public class MainMenu {
 
                         reservations.add(HotelResource.bookARoom(customer.getEmail(), room, checkInDate, checkOutDate));
 
-                        String addAnotherRoom = "";
-                        System.out.println("Do you want to book another room ? Y/N");
-                        bookingRoom = isLoop(scanner, true, addAnotherRoom);
+                        bookingRoom = false;
 
                     } catch (Exception e ){
                         System.out.println(e.getLocalizedMessage());
@@ -278,7 +276,7 @@ public class MainMenu {
 
 
             String response = "";
-            System.out.println("Do you want to check more dates for rooms available ? Y/N");
+            System.out.println("Do you want to book another room ? Y/N");
             loop = isLoop(scanner, true, response);
 
 
@@ -446,7 +444,7 @@ public class MainMenu {
 
             } catch (Exception e){
 
-                if (e.getLocalizedMessage() == null){
+                if (e.getLocalizedMessage() != null){
                     System.out.println(e.getLocalizedMessage());
                 } else {
                     System.out.println("the input provided is invalid.");
@@ -459,9 +457,9 @@ public class MainMenu {
             System.out.println("Do you want to add another room Y/N ");
             loop = isLoop(scanner, true, response);
 
-            AdminResource.addRoom(rooms);
-
         }
+
+        AdminResource.addRoom(rooms);
     }
 
 }
