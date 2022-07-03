@@ -136,12 +136,6 @@ public class MainMenu {
 
         Scanner scanner = new Scanner(System.in);
         boolean loop = true;
-        boolean bookingRoom = true;
-
-        Date checkInDate = null;
-        Date checkOutDate = null;
-
-        Collection<IRoom> rooms = null;
 
         Collection<Reservation> reservations = new ArrayList<>();
 
@@ -151,6 +145,13 @@ public class MainMenu {
 
 
         while (loop) {
+
+            boolean bookingRoom = true;
+
+            Date checkInDate = null;
+            Date checkOutDate = null;
+
+            Collection<IRoom> rooms = null;
 
             try {
                 System.out.println("Check in Date: ");
@@ -432,8 +433,9 @@ public class MainMenu {
 
                 } else if (type.equals("2")){
                     roomType = RoomType.DOUBLE;
+                } else  {
+                    throw  new IllegalArgumentException("Please choose 1 or 2 for room type");
                 }
-
 
                 System.out.println("Room successfully added");
                 if(price.intValue() == 0) {
@@ -449,8 +451,6 @@ public class MainMenu {
                 } else {
                     System.out.println("the input provided is invalid.");
                 }
-                scanner.nextLine();
-
             }
 
             String response = "";

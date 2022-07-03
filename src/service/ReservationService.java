@@ -70,7 +70,6 @@ public class ReservationService {
                     if (reserve.getRoom().equals(currentRoom)) {
 
                         if (!checkInDate.after(reserve.getCheckoutDate()) && !checkoutDate.after(reserve.getCheckoutDate())) {
-                            System.out.println("Current room have been reserve for this date ");
                             addRoomToList = false;
                         }
 
