@@ -193,26 +193,42 @@ public class MainMenu {
                 System.out.println();
             }
 
-
             if (rooms != null) {
+
+                while(true) {
+
+                    System.out.println("Would you like to book a room Y/N");
+                    String response = scanner.nextLine();
+
+                    if (response.equalsIgnoreCase("n")){
+                        bookingRoom = false;
+                        break;
+                    } else if (response.equalsIgnoreCase("y")){
+                        break;
+                    } else {
+                        System.out.println("Enter a valid choice");
+                    }
+
+                }
+
                 while(bookingRoom) {
 
                     try {
 
-                        System.out.println("Would you like to book a room Y/N");
-                        String response = scanner.nextLine();
-
                         Customer customer = null;
+                        String hasAnAccount = null;
+                        while(true) {
+                            System.out.println("Do you have an account with us ? Y/N");
+                             hasAnAccount = scanner.nextLine();
 
-                        System.out.println("Do you have an account with us ? Y/N");
-                        String hasAnAccount = scanner.nextLine();
-
-                        if(hasAnAccount.equalsIgnoreCase("y")){
-                            System.out.println("Enter your email");
-                            String email = scanner.nextLine();
-                            customer = CustomerService.getCustomer(email);
-                        } else {
-                            createAccount();
+                            if(hasAnAccount.equalsIgnoreCase("y")){
+                                System.out.println("Enter your email");
+                                String email = scanner.nextLine();
+                                customer = CustomerService.getCustomer(email);
+                                break;
+                            } else if (hasAnAccount.equalsIgnoreCase("n")){
+                                createAccount();
+                            }
                         }
 
                         System.out.println("Enter the room id you wish to reserve");
@@ -223,7 +239,7 @@ public class MainMenu {
                         ReservationService.reserveARoom(customer, room, checkInDate, checkOutDate);
 
                         String addAnotherRoom = "";
-                        System.out.println("Do you wan to book another room ?");
+                        System.out.println("Do you want to book another room ?");
                         bookingRoom = isLoop(scanner, true, addAnotherRoom);
 
                     } catch (Exception e ){

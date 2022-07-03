@@ -64,7 +64,7 @@ public class ReservationService {
         List<IRoom> rentableRooms = new ArrayList<>();
         int count = 0;
 
-        while(count != 2) {
+        while(count < 2) {
 
             for (IRoom currentRoom : rooms) {
                 boolean addRoomToList = true;
