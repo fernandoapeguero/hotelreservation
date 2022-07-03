@@ -62,31 +62,54 @@ public class ReservationService {
 
 
         List<IRoom> rentableRooms = new ArrayList<>();
+        int count = 0;
 
-        for (IRoom currentRoom : rooms) {
-            boolean addRoomToList = true;
+        while(count != 2) {
 
-            for (Reservation reserve : reservations) {
+            for (IRoom currentRoom : rooms) {
+                boolean addRoomToList = true;
 
-                if (reserve.getRoom().equals(currentRoom)) {
+                for (Reservation reserve : reservations) {
 
-                    if (!reserve.getCheckInDate().before(checkInDate) && !reserve.getCheckoutDate().before(checkInDate) || !reserve.getCheckInDate().after(checkoutDate) && !reserve.getCheckoutDate().after(checkoutDate)) {
-                        System.out.println("Current room have been reserve for this date ");
-                        addRoomToList = false;
+                    if (reserve.getRoom().equals(currentRoom)) {
+
+                        if (!reserve.getCheckInDate().before(checkInDate) && !reserve.getCheckoutDate().before(checkInDate) || !reserve.getCheckInDate().after(checkoutDate) && !reserve.getCheckoutDate().after(checkoutDate)) {
+                            System.out.println("Current room have been reserve for this date ");
+                            addRoomToList = false;
+                        }
+
                     }
-
                 }
+
+                if (addRoomToList) {
+                    rentableRooms.add(currentRoom);
+                }
+
             }
 
-            if (addRoomToList) {
-                rentableRooms.add(currentRoom);
-            } else {
-                System.out.println("Room room not available for this date ");
+            if (rentableRooms.size() == 0) {
+
+                Calendar calendar = Calendar.getInstance();
+
+                calendar.setTime(checkInDate);
+                calendar.add(Calendar.DATE, 7);
+
+                checkInDate = calendar.getTime();
+
+                calendar.setTime(checkoutDate);
+                calendar.add(Calendar.DATE, 7);
+                System.out.println("Rooms not available for provided dates checking other dates.");
+                checkoutDate = calendar.getTime();
+                System.out.println(checkInDate);
+                System.out.println(checkoutDate);
+
+
+            } else  {
+                break;
             }
 
+            count++;
         }
-
-
         return rentableRooms;
 
     }

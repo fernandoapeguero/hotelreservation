@@ -162,12 +162,11 @@ public class MainMenu {
 
                 Calendar calendar = Calendar.getInstance();
 
-                SimpleDateFormat checkInFormatter = new SimpleDateFormat("dd-MM-yyyy");
-                SimpleDateFormat checkOutFormatter = new SimpleDateFormat("dd-MM-yyyy");
+                SimpleDateFormat dateFormatter = new SimpleDateFormat("dd-MM-yyyy");
 
-                calendar.setTime(checkInFormatter.parse(checkIn));
+                calendar.setTime(dateFormatter.parse(checkIn));
                 checkInDate = calendar.getTime();
-                calendar.setTime(checkOutFormatter.parse(checkOut));
+                calendar.setTime(dateFormatter.parse(checkOut));
                 checkOutDate = calendar.getTime();
 
                 if (checkInDate.after(checkOutDate)){
@@ -197,37 +196,46 @@ public class MainMenu {
 
             if (rooms != null) {
                 while(bookingRoom) {
-                    System.out.println("Would you like to book a room Y/N");
-                    String response = scanner.nextLine();
 
-                    Customer customer;
+                    try {
 
-                    System.out.println("Do you have an account with us ? Y/N");
-                    String hasAnAccount = scanner.nextLine();
+                        System.out.println("Would you like to book a room Y/N");
+                        String response = scanner.nextLine();
 
-                    bookingRoom = isLoop(scanner, true, hasAnAccount);
+                        Customer customer = null;
 
-                    System.out.println("Enter your email");
-                    String email = scanner.nextLine();
+                        System.out.println("Do you have an account with us ? Y/N");
+                        String hasAnAccount = scanner.nextLine();
 
-                    customer = CustomerService.getCustomer(email);
+                        if(hasAnAccount.equalsIgnoreCase("y")){
+                            System.out.println("Enter your email");
+                            String email = scanner.nextLine();
+                            customer = CustomerService.getCustomer(email);
+                        } else {
+                            createAccount();
+                        }
 
-                    System.out.println("Enter the room id you wish to reserve");
-                    String roomId = scanner.nextLine();
+                        System.out.println("Enter the room id you wish to reserve");
+                        String roomId = scanner.nextLine();
 
-                    IRoom room = ReservationService.getARoom(roomId);
+                        IRoom room = ReservationService.getARoom(roomId);
 
-                    ReservationService.reserveARoom(customer, room, checkInDate, checkOutDate);
+                        ReservationService.reserveARoom(customer, room, checkInDate, checkOutDate);
 
-                    String addAnotherRoom = "";
-                    System.out.println("Do you wan to book another room ?");
-                    bookingRoom = isLoop(scanner, true, addAnotherRoom);
+                        String addAnotherRoom = "";
+                        System.out.println("Do you wan to book another room ?");
+                        bookingRoom = isLoop(scanner, true, addAnotherRoom);
+
+                    } catch (Exception e ){
+                        System.out.println(e.getLocalizedMessage());
+                    }
+
                 }
             }
 
 
             String response = "";
-            System.out.println("Are you done or check more available dates ?");
+            System.out.println("Do you want to check more dates for rooms available ? Y/N");
             loop = isLoop(scanner, true, response);
 
 
@@ -295,7 +303,7 @@ public class MainMenu {
             }
 
             String response = "";
-            System.out.println("Would you like to create another account ?");
+            System.out.println("Would you like to create another account ? Y/N");
             loop = isLoop(scanner, loop, response);
 
         }
@@ -345,7 +353,7 @@ public class MainMenu {
     public static void addRoom() {
 
         boolean loop = true;
-        Room room = null;
+        Room room;
 
         while(loop) {
             Scanner scanner = new Scanner(System.in);
@@ -383,7 +391,7 @@ public class MainMenu {
                 if (e.getLocalizedMessage() == null){
                     System.out.println(e.getLocalizedMessage());
                 } else {
-                    System.out.println("the input provided was wrong.");
+                    System.out.println("the input provided is invalid.");
                 }
                 scanner.nextLine();
 
@@ -391,7 +399,7 @@ public class MainMenu {
 
             String response = "";
             System.out.println("Do you want to add another room Y/N ");
-            loop = isLoop(scanner, loop, response);
+            loop = isLoop(scanner, true, response);
 
 
         }
