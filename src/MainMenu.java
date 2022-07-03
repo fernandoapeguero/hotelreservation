@@ -105,10 +105,9 @@ public class MainMenu {
                 return false;
             }
 
-            default -> {
-                System.out.println("Please enter a valid choice.");
+            default -> System.out.println("Please enter a valid choice.");
 
-            }
+
         }
 
         return true;
@@ -125,10 +124,7 @@ public class MainMenu {
                 mainMenu();
                 return false;
             }
-            default -> {
-                System.out.println("Please enter a valid choice.");
-
-            }
+            default -> System.out.println("Please enter a valid choice.");
         }
 
         return true;
@@ -174,13 +170,42 @@ public class MainMenu {
 
                 }
 
+                int count = 0;
+                while(count < 2) {
+                    rooms = ReservationService.findRooms(checkInDate, checkOutDate);
 
-                rooms = ReservationService.findRooms(checkInDate, checkOutDate);
+                    if (rooms.size() == 0 && count != 1) {
 
-                if (rooms.size() == 0){
+                        calendar.setTime(checkInDate);
+                        calendar.add(Calendar.DATE, 7);
+
+                        checkInDate = calendar.getTime();
+
+                        calendar.setTime(checkOutDate);
+                        calendar.add(Calendar.DATE, 7);
+                        checkOutDate  = calendar.getTime();
+
+                        System.out.println("checking alternated date for room availability.");
+
+                    } else {
+
+                        if (count  == 1 && rooms.size() > 0){
+                            System.out.println();
+                            System.out.println("New check in and check out dates");
+                            System.out.println("Check In Date: " + checkInDate);
+                            System.out.println("Check Out Date: " + checkOutDate);
+                        }
+
+                        break;
+                    }
+
+                    count++;
+                }
+
+                if (rooms.size() == 0) {
                     System.out.println("No rooms available");
                 } else {
-                    for(IRoom room : rooms){
+                    for (IRoom room : rooms) {
                         System.out.println(room);
                     }
 
@@ -215,8 +240,8 @@ public class MainMenu {
 
                     try {
 
-                        Customer customer = null;
-                        String hasAnAccount = null;
+                        Customer customer;
+                        String hasAnAccount;
                         while(true) {
                             System.out.println("Do you have an account with us ? Y/N");
                              hasAnAccount = scanner.nextLine();
@@ -239,7 +264,7 @@ public class MainMenu {
                         ReservationService.reserveARoom(customer, room, checkInDate, checkOutDate);
 
                         String addAnotherRoom = "";
-                        System.out.println("Do you want to book another room ?");
+                        System.out.println("Do you want to book another room ? Y/N");
                         bookingRoom = isLoop(scanner, true, addAnotherRoom);
 
                     } catch (Exception e ){
@@ -276,7 +301,7 @@ public class MainMenu {
     }
 
     public static void seeReservations() {
-        System.out.println("All Reservations");
+        System.out.println("---------------------Reservations---------------------");
 
         Scanner scanner = new Scanner(System.in);
 
@@ -287,10 +312,14 @@ public class MainMenu {
 
         Collection<Reservation> customerReservations =  ReservationService.getCustomerReservation(currentCustomer);
 
-        for (Reservation reserve: customerReservations){
-            System.out.println(reserve);
-        }
+        if (customerReservations.size() > 0) {
+            for (Reservation reserve: customerReservations){
+                System.out.println(reserve);
+            }
 
+        } else  {
+            System.out.println("You have no reservations at this moment.");
+        }
 
     }
 
@@ -298,6 +327,9 @@ public class MainMenu {
         Scanner scanner = new Scanner(System.in);
 
         boolean loop = true;
+
+        System.out.println("Creating new account.");
+        System.out.println();
 
         while(loop){
 

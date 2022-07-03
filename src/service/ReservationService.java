@@ -11,7 +11,7 @@ import java.util.*;
 
 public class ReservationService {
 
-    private static List<Reservation> reservations = new ArrayList<>();
+    private static final List<Reservation> reservations = new ArrayList<>();
     public static List<IRoom> rooms = new ArrayList<>();
 
     public static void addRoom(IRoom room){
@@ -60,11 +60,7 @@ public class ReservationService {
     }
     public static Collection<IRoom> findRooms(Date checkInDate, Date checkoutDate) {
 
-
         List<IRoom> rentableRooms = new ArrayList<>();
-        int count = 0;
-
-        while(count < 2) {
 
             for (IRoom currentRoom : rooms) {
                 boolean addRoomToList = true;
@@ -73,7 +69,7 @@ public class ReservationService {
 
                     if (reserve.getRoom().equals(currentRoom)) {
 
-                        if (!reserve.getCheckInDate().before(checkInDate) && !reserve.getCheckoutDate().before(checkInDate) || !reserve.getCheckInDate().after(checkoutDate) && !reserve.getCheckoutDate().after(checkoutDate)) {
+                        if (!checkInDate.after(reserve.getCheckoutDate())) {
                             System.out.println("Current room have been reserve for this date ");
                             addRoomToList = false;
                         }
@@ -87,29 +83,6 @@ public class ReservationService {
 
             }
 
-            if (rentableRooms.size() == 0) {
-
-                Calendar calendar = Calendar.getInstance();
-
-                calendar.setTime(checkInDate);
-                calendar.add(Calendar.DATE, 7);
-
-                checkInDate = calendar.getTime();
-
-                calendar.setTime(checkoutDate);
-                calendar.add(Calendar.DATE, 7);
-                System.out.println("Rooms not available for provided dates checking other dates.");
-                checkoutDate = calendar.getTime();
-                System.out.println(checkInDate);
-                System.out.println(checkoutDate);
-
-
-            } else  {
-                break;
-            }
-
-            count++;
-        }
         return rentableRooms;
 
     }
