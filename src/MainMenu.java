@@ -188,8 +188,8 @@ public class MainMenu {
                 System.out.println("Check in Date: ");
                 String checkIn = scanner.nextLine();
                 System.out.println("Check out Date: ");
-                System.out.println();
                 String checkOut = scanner.nextLine();
+                System.out.println();
 
                 Calendar calendar = Calendar.getInstance();
 
@@ -282,7 +282,7 @@ public class MainMenu {
                              hasAnAccount = scanner.nextLine();
 
                             if(hasAnAccount.equalsIgnoreCase("y")){
-                                System.out.println("Enter your email");
+                                System.out.println("Enter your email: name@domain.com");
                                 String email = scanner.nextLine();
                                 customer = HotelResource.getCustomer(email);
                                 break;
@@ -353,7 +353,7 @@ public class MainMenu {
 
         Scanner scanner = new Scanner(System.in);
 
-        System.out.println("enter you email");
+        System.out.println("Enter your email: name@domain.com");
         String email = scanner.nextLine();
 
         Collection<Reservation> customerReservations =  HotelResource.getCustomerReservations(email);
@@ -384,7 +384,7 @@ public class MainMenu {
 
             try{
 
-                System.out.println("Enter your email: ");
+                System.out.println("Enter your email: name@domain.com");
                 String email = scanner.nextLine();
 
                 System.out.println("First Name: ");
