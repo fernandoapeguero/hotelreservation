@@ -20,7 +20,7 @@ public class MainMenu {
      * you can choose from multiple option booking a room seen you reservations and more
      *
     * */
-    public static void mainMenu () {
+    static void mainMenu () {
         boolean loop = true;
 
         try(Scanner ignored = new Scanner(System.in)) {
@@ -48,7 +48,7 @@ public class MainMenu {
      * it has functionality to add new rooms to the hotel.
      *
      * */
-    private static void adminMenu() {
+    static void adminMenu() {
 
         boolean loop = true;
 
@@ -75,7 +75,7 @@ public class MainMenu {
      * the customer choose.
      *
      * */
-    public static Boolean getUserInput() {
+    static Boolean getUserInput() {
             Scanner scanner  = new Scanner(System.in);
                 try {
                    return selectedMainMenuOption(scanner.nextLine());
@@ -90,7 +90,7 @@ public class MainMenu {
      * getAdminInput gets the input for the admin menu option and choose from the admin chosen option.
      *
      * */
-    public static Boolean getAdminInput() {
+    static Boolean getAdminInput() {
            Scanner scanner  = new Scanner(System.in);
                 try {
                     return selectedAdminMenuOption(scanner.nextLine());
@@ -108,7 +108,7 @@ public class MainMenu {
      *
      * @param selected - used to determine witch menu option to choose.
      * */
-    public static Boolean selectedMainMenuOption(String selected) {
+    static Boolean selectedMainMenuOption(String selected) {
 
         switch (selected) {
             case "1" -> findAndReserveRoom();
@@ -133,7 +133,7 @@ public class MainMenu {
      *
      * @param selected - used to determine witch menu option to choose.
      * */
-    private static Boolean selectedAdminMenuOption(String selected) {
+    static Boolean selectedAdminMenuOption(String selected) {
 
         switch (selected) {
             case "1" -> seeAllCustomers();
@@ -156,7 +156,7 @@ public class MainMenu {
     /**
      * Find and Reserve Room - this method allow you to reserve a room base on the available date for the rooms.
      * */
-    public static void findAndReserveRoom() {
+    static void findAndReserveRoom() {
         System.out.println("--------------------- Available Rooms ---------------------");
 
         Scanner scanner = new Scanner(System.in);
@@ -323,7 +323,7 @@ public class MainMenu {
      * since the code was repeated it was decided to create a method for it for better readability and
      * functionality.
      * */
-    private static boolean isLoop(Scanner scanner, boolean loop, String response) {
+    static boolean isLoop(Scanner scanner, boolean loop, String response) {
 
         while(!response.equalsIgnoreCase("y") || !response.equalsIgnoreCase("n")){
             response = scanner.nextLine();
@@ -342,7 +342,7 @@ public class MainMenu {
     /**
      * seeReservations - allows you to see the reservations that you have made with the hotel.
      * */
-    public static void seeReservations() {
+    static void seeReservations() {
         System.out.println("---------------------Reservations---------------------");
 
         Scanner scanner = new Scanner(System.in);
@@ -366,7 +366,7 @@ public class MainMenu {
     /**
      * CreateAccount - allows you to create an account with the hotel.
      * */
-    public static void createAccount () {
+     static void createAccount () {
         Scanner scanner = new Scanner(System.in);
 
         boolean loop = true;
@@ -405,7 +405,7 @@ public class MainMenu {
     /**
      * seeAllCustomers - Allow you to see all customer that have sign up for and account with the hotel.
      * */
-    public static void seeAllCustomers() {
+    static void seeAllCustomers() {
 
         System.out.println("Customer Directory");
         System.out.println("----------------------------------------------");
@@ -428,7 +428,7 @@ public class MainMenu {
     /**
      * seeAllRooms - allows you to see all the rooms in the system.
      * */
-    public static void seeAllRooms() {
+    static void seeAllRooms() {
         System.out.println("----------------Rooms List----------------");
         Collection<IRoom> rooms = AdminResource.getInstance().getAllRooms();
 
@@ -445,7 +445,7 @@ public class MainMenu {
     /**
      * method allow you to see all reservations made by customer in you hotel.
      * */
-    public static void seeAllReservations() {
+    static void seeAllReservations() {
         System.out.println("Reservations Directory");
 
         System.out.println("----------------------------------------------");
@@ -458,7 +458,7 @@ public class MainMenu {
     /**
      * addRoom - gives you the ability as an administrator to add rooms to the system for customer to book
      * */
-    public static void addRoom() {
+    static void addRoom() {
 
         boolean loop = true;
         List<IRoom> rooms = new ArrayList<>();
