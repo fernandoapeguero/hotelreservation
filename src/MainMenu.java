@@ -1,13 +1,7 @@
 import api.AdminResource;
 import api.HotelResource;
 import models.*;
-import service.CustomerService;
-import service.ReservationService;
-
-import javax.lang.model.element.AnnotationMirror;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
 import java.util.*;
 
 public class MainMenu {
@@ -29,7 +23,7 @@ public class MainMenu {
     public static void mainMenu () {
         boolean loop = true;
 
-        try(Scanner scanner = new Scanner(System.in)) {
+        try(Scanner ignored = new Scanner(System.in)) {
             while (loop) {
 
 
@@ -207,7 +201,7 @@ public class MainMenu {
 
                 int count = 0;
                 while(count < 2) {
-                    rooms = HotelResource.findARoom(checkInDate, checkOutDate);
+                    rooms = HotelResource.getInstance().findARoom(checkInDate, checkOutDate);
 
                     if (rooms.size() == 0 && count != 1) {
 
@@ -284,7 +278,7 @@ public class MainMenu {
                             if(hasAnAccount.equalsIgnoreCase("y")){
                                 System.out.println("Enter your email: name@domain.com");
                                 String email = scanner.nextLine();
-                                customer = HotelResource.getCustomer(email);
+                                customer = HotelResource.getInstance().getCustomer(email);
                                 break;
                             } else if (hasAnAccount.equalsIgnoreCase("n")){
                                 createAccount();
@@ -294,9 +288,9 @@ public class MainMenu {
                         System.out.println("Enter the room id you wish to reserve");
                         String roomId = scanner.nextLine();
 
-                        IRoom room = HotelResource.getRoom(roomId);
+                        IRoom room = HotelResource.getInstance().getRoom(roomId);
 
-                        reservations.add(HotelResource.bookARoom(customer.getEmail(), room, checkInDate, checkOutDate));
+                        reservations.add(HotelResource.getInstance().bookARoom(customer.getEmail(), room, checkInDate, checkOutDate));
 
                         bookingRoom = false;
 
@@ -356,7 +350,7 @@ public class MainMenu {
         System.out.println("Enter your email: name@domain.com");
         String email = scanner.nextLine();
 
-        Collection<Reservation> customerReservations =  HotelResource.getCustomerReservations(email);
+        Collection<Reservation> customerReservations =  HotelResource.getInstance().getCustomerReservations(email);
 
         if (customerReservations.size() > 0) {
             for (Reservation reserve: customerReservations){
@@ -393,7 +387,7 @@ public class MainMenu {
                 System.out.println("Last Name: ");
                 String lastName = scanner.nextLine();
 
-                HotelResource.createACustomer(email, firstName,lastName);
+                HotelResource.getInstance().createACustomer(email, firstName,lastName);
             }
             catch (Exception e){
                 System.out.println(e.getLocalizedMessage());
@@ -401,7 +395,7 @@ public class MainMenu {
 
             String response = "";
             System.out.println("Would you like to create another account ? Y/N");
-            loop = isLoop(scanner, loop, response);
+            loop = isLoop(scanner, true, response);
 
         }
     }
