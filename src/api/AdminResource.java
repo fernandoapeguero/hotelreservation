@@ -12,7 +12,7 @@ import java.util.List;
 public class AdminResource {
 
     public static Customer getCustomer(String email){
-        return CustomerService.getCustomer(email);
+        return CustomerService.getInstance().getCustomer(email);
 
     }
 
@@ -28,7 +28,7 @@ public class AdminResource {
     }
 
     public static Collection<Customer> getAllCustomer() {
-        return CustomerService.getAllCustomers();
+        return CustomerService.getInstance().getAllCustomers();
 
     }
 

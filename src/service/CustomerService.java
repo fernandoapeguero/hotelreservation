@@ -9,9 +9,11 @@ import java.util.regex.Pattern;
 
 public class CustomerService {
 
+    private static CustomerService INSTANCE;
+
     private static final Collection<Customer> customers = new ArrayList<>();
 
-    public static void addCustomer(String email, String firstName, String lastName) {
+    public void addCustomer(String email, String firstName, String lastName) {
 
         String emailPattern = "^(.+)@(.+).com$";
         Pattern pattern = Pattern.compile(emailPattern);
@@ -36,7 +38,7 @@ public class CustomerService {
     }
 
 
-    public static Customer getCustomer(String customerEmail){
+    public Customer getCustomer(String customerEmail){
         Customer customer = null;
 
 
@@ -55,7 +57,16 @@ public class CustomerService {
         return customer;
     }
 
-    public static Collection<Customer> getAllCustomers() {
+    public  Collection<Customer> getAllCustomers() {
         return customers;
+    }
+
+    public static CustomerService getInstance(){
+
+        if(INSTANCE == null){
+            INSTANCE = new CustomerService();
+        }
+
+        return  INSTANCE;
     }
 }
