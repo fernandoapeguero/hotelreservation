@@ -18,12 +18,12 @@ public class AdminResource {
 
     public static void addRoom(List<IRoom> rooms){
         for (IRoom room: rooms){
-            ReservationService.addRoom(room);
+            ReservationService.getINSTANCE().addRoom(room);
         }
     }
 
     public static Collection<IRoom> getAllRooms() {
-        return ReservationService.getRoomList();
+        return ReservationService.getINSTANCE().getRoomList();
 
     }
 
@@ -34,6 +34,6 @@ public class AdminResource {
 
     public static void displayAllReservations() {
 
-        ReservationService.printAllReservation();
+        ReservationService.getINSTANCE().printAllReservation();
     }
 }

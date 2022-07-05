@@ -3,18 +3,15 @@ package service;
 import models.Customer;
 import models.IRoom;
 import models.Reservation;
-import models.Room;
-
-import java.sql.Array;
-import java.text.SimpleDateFormat;
 import java.util.*;
 
 public class ReservationService {
 
+    private static ReservationService INSTANCE;
     private static final List<Reservation> reservations = new ArrayList<>();
     private static final List<IRoom> rooms = new ArrayList<>();
 
-    public static void addRoom(IRoom room){
+    public void addRoom(IRoom room){
         boolean isNotADuplicated = true;
 
         for (IRoom r: rooms){
@@ -33,7 +30,7 @@ public class ReservationService {
 
     }
 
-    public static IRoom getARoom(String roomId) {
+    public IRoom getARoom(String roomId) {
 
 
         for (IRoom room: rooms){
@@ -45,7 +42,7 @@ public class ReservationService {
         throw new IllegalArgumentException("Room Not Found");
     }
 
-    public static Reservation reserveARoom(Customer customer, IRoom room, Date checkInDate, Date checkOutDate) {
+    public Reservation reserveARoom(Customer customer, IRoom room, Date checkInDate, Date checkOutDate) {
 
         Reservation reserve = new Reservation(
                 customer,
@@ -58,7 +55,7 @@ public class ReservationService {
 
         return reserve;
     }
-    public static Collection<IRoom> findRooms(Date checkInDate, Date checkoutDate) {
+    public Collection<IRoom> findRooms(Date checkInDate, Date checkoutDate) {
 
         List<IRoom> rentableRooms = new ArrayList<>();
 
@@ -86,7 +83,7 @@ public class ReservationService {
 
     }
 
-    public static Collection<Reservation> getCustomerReservation(Customer customer){
+    public Collection<Reservation> getCustomerReservation(Customer customer){
 
         Collection<Reservation> customerReservations = new ArrayList<>();
 
@@ -100,7 +97,7 @@ public class ReservationService {
         return customerReservations;
     }
 
-    public static void printAllReservation() {
+    public void printAllReservation() {
 
         if (reservations.size() == 0)  {
             System.out.println("There are no current reservations.");
@@ -112,7 +109,16 @@ public class ReservationService {
 
     }
 
-    public static Collection<IRoom> getRoomList(){
+    public Collection<IRoom> getRoomList(){
         return rooms;
+    }
+
+    public static ReservationService getINSTANCE() {
+
+        if (INSTANCE == null){
+            INSTANCE = new ReservationService();
+        }
+
+        return INSTANCE;
     }
 }
