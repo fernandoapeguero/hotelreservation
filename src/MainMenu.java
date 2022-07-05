@@ -409,7 +409,7 @@ public class MainMenu {
 
         System.out.println("Customer Directory");
         System.out.println("----------------------------------------------");
-        Collection<Customer> customers = AdminResource.getAllCustomer();
+        Collection<Customer> customers = AdminResource.getInstance().getAllCustomer();
 
         if (customers.size() > 0){
 
@@ -430,7 +430,7 @@ public class MainMenu {
      * */
     public static void seeAllRooms() {
         System.out.println("----------------Rooms List----------------");
-        Collection<IRoom> rooms = AdminResource.getAllRooms();
+        Collection<IRoom> rooms = AdminResource.getInstance().getAllRooms();
 
         if (rooms.size() == 0) {
             System.out.println("There are no rooms available");
@@ -450,7 +450,7 @@ public class MainMenu {
 
         System.out.println("----------------------------------------------");
         System.out.println();
-        AdminResource.displayAllReservations();
+        AdminResource.getInstance().displayAllReservations();
         System.out.println("----------------------------------------------");
 
     }
@@ -508,7 +508,7 @@ public class MainMenu {
 
         }
 
-        AdminResource.addRoom(rooms);
+        AdminResource.getInstance().addRoom(rooms);
     }
 
 }

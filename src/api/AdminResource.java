@@ -2,38 +2,47 @@ package api;
 
 import models.Customer;
 import models.IRoom;
-import models.Reservation;
 import service.CustomerService;
 import service.ReservationService;
-
 import java.util.Collection;
 import java.util.List;
 
 public class AdminResource {
 
-    public static Customer getCustomer(String email){
+    private static AdminResource INSTANCE;
+
+    public Customer getCustomer(String email){
         return CustomerService.getInstance().getCustomer(email);
 
     }
 
-    public static void addRoom(List<IRoom> rooms){
+    public void addRoom(List<IRoom> rooms){
         for (IRoom room: rooms){
             ReservationService.getINSTANCE().addRoom(room);
         }
     }
 
-    public static Collection<IRoom> getAllRooms() {
+    public Collection<IRoom> getAllRooms() {
         return ReservationService.getINSTANCE().getRoomList();
 
     }
 
-    public static Collection<Customer> getAllCustomer() {
+    public Collection<Customer> getAllCustomer() {
         return CustomerService.getInstance().getAllCustomers();
 
     }
 
-    public static void displayAllReservations() {
+    public void displayAllReservations() {
 
         ReservationService.getINSTANCE().printAllReservation();
+    }
+
+    public static AdminResource getInstance(){
+
+        if(INSTANCE == null){
+            INSTANCE = new AdminResource();
+        }
+
+        return INSTANCE;
     }
 }
