@@ -12,26 +12,10 @@ public class ReservationService {
     private static final List<IRoom> rooms = new ArrayList<>();
 
     public void addRoom(IRoom room){
-        boolean isNotADuplicated = true;
-
-        for (IRoom r: rooms){
-
-            if(r.getRoomNumber().equals(room.getRoomNumber())){
-                isNotADuplicated = false;
-            }
-        }
-
-        if (isNotADuplicated){
-
             rooms.add(room);
-        } else{
-            throw new IllegalArgumentException("The id provided already exist");
-        }
-
     }
 
     public IRoom getARoom(String roomId) {
-
 
         for (IRoom room: rooms){
             if (room.getRoomNumber().equals(roomId)){
@@ -63,13 +47,10 @@ public class ReservationService {
                 boolean addRoomToList = true;
 
                 for (Reservation reserve : reservations) {
-
-                    if (reserve.getRoom().equals(currentRoom)) {
-
-                        if (!checkInDate.after(reserve.getCheckoutDate()) && !checkoutDate.after(reserve.getCheckoutDate())) {
+                    if (currentRoom.equals(reserve)) {
+                        if (!checkInDate.before(reserve.getCheckInDate()) && !checkoutDate.before(checkInDate) || !checkInDate.after(reserve.getCheckoutDate()) && !checkoutDate.after(reserve.getCheckoutDate())) {
                             addRoomToList = false;
                         }
-
                     }
                 }
 

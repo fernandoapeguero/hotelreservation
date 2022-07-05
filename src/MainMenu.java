@@ -223,6 +223,7 @@ public class MainMenu {
                             System.out.println("New check in and check out dates");
                             System.out.println("Check In Date: " + checkInDate);
                             System.out.println("Check Out Date: " + checkOutDate);
+                            System.out.println();
                         }
 
                         break;
@@ -486,12 +487,19 @@ public class MainMenu {
                     throw  new IllegalArgumentException("Please choose 1 or 2 for room type");
                 }
 
-                System.out.println("Room successfully added");
+                for (IRoom room : rooms){
+                    if (roomID.equals(room.getRoomNumber())){
+                        throw new IllegalArgumentException("The room id you enter already exist");
+                    }
+                }
+
                 if(price.intValue() == 0) {
                     rooms.add(new FreeRoom(roomID, roomType));
                 } else {
                     rooms.add(new Room(roomID, price, roomType));
                 }
+
+                System.out.println("Room successfully added");
 
             } catch (Exception e){
 

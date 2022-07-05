@@ -37,4 +37,9 @@ public class Room implements IRoom{
     public boolean isFree() {
         return price == 0;
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        return super.equals(obj);
+    }
 }
