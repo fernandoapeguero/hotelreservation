@@ -162,6 +162,7 @@ public class MainMenu {
         Scanner scanner = new Scanner(System.in);
         boolean loop = true;
         Customer customer = null;
+        Date todayDate = new Date();
 
         Collection<Reservation> reservations = new ArrayList<>();
 
@@ -195,7 +196,9 @@ public class MainMenu {
                 calendar.setTime(dateFormatter.parse(checkOut));
                 checkOutDate = calendar.getTime();
 
-                if (checkInDate.after(checkOutDate)){
+                if (checkInDate.before(todayDate)){
+                    throw new IllegalArgumentException("You can not book a room from past dates");
+                } else if (checkInDate.after(checkOutDate)){
                     throw new IllegalArgumentException("The check in date must be before your checkout date.");
 
                 } else if (checkInDate.equals(checkOutDate)) {
@@ -247,10 +250,15 @@ public class MainMenu {
 
                 System.out.println();
             } catch (Exception e) {
-                System.out.println(e.getLocalizedMessage());
-                System.out.println("Please enter the dates for your reservation.");
-                System.out.println("Date format is as follow day-month-year or dd-mm-year");
-                System.out.println();
+
+                if (e.getLocalizedMessage() != null){
+                    System.out.println(e.getLocalizedMessage());
+                } else {
+                    System.out.println("Please enter the dates for your reservation.");
+                    System.out.println("Date format is as follow day-month-year or dd-mm-year");
+                    System.out.println();
+                }
+
             }
 
             if (rooms != null && rooms.size() > 0) {
