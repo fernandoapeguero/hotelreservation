@@ -20,7 +20,7 @@ public class Reservation {
 
     @Override
     public String toString() {
-        return "Customer Name: " + customer.getFirstName() + "\nRoom Number: " + room.getRoomNumber() + "\nCheck In Date: " + checkInDate + "\nCheck Out Date " + checkoutDate;
+        return "Customer Name: " + customer.getFirstName() + " Room Number: " + room.getRoomNumber() + "Check In Date: " + checkInDate+ "Check Out Date " + checkoutDate;
     }
 
     public IRoom getRoom() {

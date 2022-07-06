@@ -161,6 +161,7 @@ public class MainMenu {
 
         Scanner scanner = new Scanner(System.in);
         boolean loop = true;
+        Customer customer = null;
 
         Collection<Reservation> reservations = new ArrayList<>();
 
@@ -274,20 +275,27 @@ public class MainMenu {
 
                     try {
 
-                        Customer customer;
                         String hasAnAccount;
                         while(true) {
-                            System.out.println("Do you have an account with us ? Y/N");
-                             hasAnAccount = scanner.nextLine();
 
-                            if(hasAnAccount.equalsIgnoreCase("y")){
-                                System.out.println("Enter your email: name@domain.com");
-                                String email = scanner.nextLine();
-                                customer = HotelResource.getInstance().getCustomer(email);
+                            if (customer != null){
+                                System.out.println("using account  " + customer.getEmail());
                                 break;
-                            } else if (hasAnAccount.equalsIgnoreCase("n")){
-                                createAccount();
+
+                            } else {
+                                System.out.println("Do you have an account with us ? Y/N");
+                                hasAnAccount = scanner.nextLine();
+
+                                if(hasAnAccount.equalsIgnoreCase("y")){
+                                    System.out.println("Enter your email: name@domain.com");
+                                    String email = scanner.nextLine();
+                                    customer = HotelResource.getInstance().getCustomer(email);
+                                    break;
+                                } else if (hasAnAccount.equalsIgnoreCase("n")){
+                                    createAccount();
+                                }
                             }
+
                         }
 
                         System.out.println("Enter the room id you wish to reserve");
@@ -321,22 +329,21 @@ public class MainMenu {
                 }
             }
 
-
             String response = "";
             System.out.println("Do you want to book another room ? Y/N");
             loop = isLoop(scanner, true, response);
-
 
         }
 
         System.out.println();
         if (reservations.size() > 0) {
-            System.out.println("------------------Reservations--------------------");
+            System.out.println("------------------Thank you for your Reservation--------------------");
             for (Reservation reserve: reservations){
                 System.out.println(reserve);
             }
         }
 
+        System.out.println();
     }
 
     /**
@@ -460,7 +467,7 @@ public class MainMenu {
                 System.out.println(room);
             }
         }
-
+        System.out.println();
     }
 
     /**
