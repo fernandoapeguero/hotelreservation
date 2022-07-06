@@ -9,4 +9,6 @@ public interface IRoom {
     RoomType getRoomType();
 
     boolean isFree();
+
+    boolean equals(IRoom obj);
 }

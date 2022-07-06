@@ -47,9 +47,10 @@ public class ReservationService {
                 boolean addRoomToList = true;
 
                 for (Reservation reserve : reservations) {
-                    if (currentRoom.equals(reserve)) {
-                        if (!checkInDate.before(reserve.getCheckInDate()) && !checkoutDate.before(checkInDate) || !checkInDate.after(reserve.getCheckoutDate()) && !checkoutDate.after(reserve.getCheckoutDate())) {
+                    if (currentRoom.equals(reserve.getRoom())) {
+                        if (checkInDate.getTime() >= reserve.getCheckInDate().getTime() && checkInDate.getTime() <= reserve.getCheckoutDate().getTime() || checkoutDate.getTime() >= reserve.getCheckInDate().getTime() && checkoutDate.getTime() <= reserve.getCheckoutDate().getTime()) {
                             addRoomToList = false;
+                            break;
                         }
                     }
                 }

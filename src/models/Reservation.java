@@ -20,7 +20,7 @@ public class Reservation {
 
     @Override
     public String toString() {
-        return "Customer Name: " + customer.getFirstName() + " Check In Date: " + checkInDate + " Check Out Date " + checkoutDate;
+        return "Customer Name: " + customer.getFirstName() + "\nRoom Number: " + room.getRoomNumber() + "\nCheck In Date: " + checkInDate + "\nCheck Out Date " + checkoutDate;
     }
 
     public IRoom getRoom() {
@@ -40,7 +40,4 @@ public class Reservation {
         return customer;
     }
 
-    public void setCustomer(Customer customer) {
-        this.customer = customer;
-    }
 }

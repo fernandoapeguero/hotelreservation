@@ -39,7 +39,7 @@ public class Room implements IRoom{
     }
 
     @Override
-    public boolean equals(Object obj) {
-        return super.equals(obj);
+    public boolean equals(IRoom obj) {
+        return roomNumber.equals(obj.getRoomNumber());
     }
 }

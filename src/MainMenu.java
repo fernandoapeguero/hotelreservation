@@ -171,7 +171,7 @@ public class MainMenu {
 
         while (loop) {
 
-            boolean bookingRoom = true;
+            boolean bookingRoom = false;
 
             Date checkInDate = null;
             Date checkOutDate = null;
@@ -197,6 +197,8 @@ public class MainMenu {
                 if (checkInDate.after(checkOutDate)){
                     throw new IllegalArgumentException("The check in date must be before your checkout date.");
 
+                } else if (checkInDate.equals(checkOutDate)) {
+                    throw new IllegalArgumentException("The duration of your stay must be at least 1 night.");
                 }
 
                 int count = 0;
@@ -234,6 +236,7 @@ public class MainMenu {
 
                 if (rooms.size() == 0) {
                     System.out.println("No rooms available");
+                    break;
                 } else {
                     for (IRoom room : rooms) {
                         System.out.println(room);
@@ -244,11 +247,12 @@ public class MainMenu {
                 System.out.println();
             } catch (Exception e) {
                 System.out.println(e.getLocalizedMessage());
-                System.out.println("Date format day/month/year");
+                System.out.println("Please enter the dates for your reservation.");
+                System.out.println("Date format is as follow day-month-year or dd-mm-year");
                 System.out.println();
             }
 
-            if (rooms != null) {
+            if (rooms != null && rooms.size() > 0) {
 
                 while(true) {
 
@@ -256,9 +260,9 @@ public class MainMenu {
                     String response = scanner.nextLine();
 
                     if (response.equalsIgnoreCase("n")){
-                        bookingRoom = false;
                         break;
                     } else if (response.equalsIgnoreCase("y")){
+                        bookingRoom = true;
                         break;
                     } else {
                         System.out.println("Enter a valid choice");
@@ -291,9 +295,24 @@ public class MainMenu {
 
                         IRoom room = HotelResource.getInstance().getRoom(roomId);
 
-                        reservations.add(HotelResource.getInstance().bookARoom(customer.getEmail(), room, checkInDate, checkOutDate));
+                        boolean isValidId = false;
 
-                        bookingRoom = false;
+                        for (IRoom r: rooms){
+                            if (r.getRoomNumber().equals(room.getRoomNumber())){
+                                isValidId = true;
+                            }
+
+                        }
+
+                        if (isValidId){
+                            reservations.add(HotelResource.getInstance().bookARoom(customer.getEmail(), room, checkInDate, checkOutDate));
+
+                            bookingRoom = false;
+                        } else {
+                            System.out.println("The id provided for the room have already been book for this date or is not valid.");
+                            System.out.println("Provided a valid id for the room.");
+                            System.out.println();
+                        }
 
                     } catch (Exception e ){
                         System.out.println(e.getLocalizedMessage());
@@ -310,6 +329,7 @@ public class MainMenu {
 
         }
 
+        System.out.println();
         if (reservations.size() > 0) {
             System.out.println("------------------Reservations--------------------");
             for (Reservation reserve: reservations){
