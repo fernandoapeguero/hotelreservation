@@ -20,7 +20,6 @@ public class HotelResource {
 
 
     public void createACustomer(String email, String firstName, String lastName) {
-
       CustomerService.getInstance().addCustomer(email, firstName,lastName);
     }
 

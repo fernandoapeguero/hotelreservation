@@ -18,7 +18,7 @@ public class ReservationService {
     public IRoom getARoom(String roomId) {
 
         for (IRoom room: rooms){
-            if (room.getRoomNumber().equals(roomId)){
+            if (isEquals(room,roomId)){
                 return  room;
             }
         }
@@ -102,5 +102,9 @@ public class ReservationService {
         }
 
         return INSTANCE;
+    }
+
+    boolean isEquals(IRoom room ,String roomId) {
+        return room.getRoomNumber().equals(roomId);
     }
 }
